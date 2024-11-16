@@ -60,4 +60,5 @@ dependencies {
     implementation(libs.room.runtime)
     // implementation(libs.room.compiler)
     implementation(libs.kotlin.serialization)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 }

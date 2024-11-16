@@ -17,13 +17,6 @@ import com.tytbutler.pantry.ui.theme.PantryTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        val db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java,
-            "pantry-db"
-        ).build()
-        val itemDao = db.itemDao();
-        val recipeDao = db.recipeDao();
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {

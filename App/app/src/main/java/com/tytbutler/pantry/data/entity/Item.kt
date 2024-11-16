@@ -10,9 +10,10 @@ import androidx.room.PrimaryKey
 @Fts4
 data class Item (
     @PrimaryKey  val uid: Int,
-    val key: String,
+    val id: String,
     val name: String,
-    val category: Category
+    val category: Category,
+    val isNeeded: Boolean
 ) {
     enum class Category {
         Produce { override fun toString(): String = "Produce" },
@@ -43,5 +44,11 @@ data class Item (
                 }
             }
         }
+    }
+    companion object {
+        fun nameToId(name: String): String = name
+            .lowercase()
+            .filter{it.code in 1..127}
+            .replace(' ', '-')
     }
 }

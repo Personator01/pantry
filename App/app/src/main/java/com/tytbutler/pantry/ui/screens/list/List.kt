@@ -1,4 +1,4 @@
-package com.tytbutler.pantry.ui.screens
+package com.tytbutler.pantry.ui.screens.list
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
