@@ -21,23 +21,25 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ListScreen(viewModel: ItemsViewModel = viewModel(factory = AppViewModelProvider.Factory), modifier: Modifier = Modifier) {
-    val openItem by viewModel.openItem.collectAsState();
+    val isEdit by viewModel.isEdit.collectAsState()
     val items by viewModel.list.collectAsState(listOf());
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = {viewModel.openEdit(Item.empty(true))}) {
-                Icon(Icons.Filled.Add, "")
+            if (!isEdit) {
+                FloatingActionButton(onClick = { viewModel.openEdit(Item.empty(true)) }) {
+                    Icon(Icons.Filled.Add, "")
+                }
             }
         }
     ) {
-        if (openItem == null) {
+        if (!isEdit) {
             List(
                 items = items,
                 onDelItem = {
                     val i = it
                     coroutineScope.launch {
-                        viewModel.delCurrentItem()
+                        viewModel.delCurrentItem(i)
                     }
                 })
         } else {
@@ -47,7 +49,7 @@ fun ListScreen(viewModel: ItemsViewModel = viewModel(factory = AppViewModelProvi
                 onSubmit = {
                     val i = it
                     coroutineScope.launch {
-                        viewModel.saveCurrentItem()
+                        viewModel.saveCurrentItem(true)
                     }
                     viewModel.closeEdit()
                 },

@@ -23,5 +23,5 @@ interface ItemDao {
     fun getNeeded(): Flow<List<Item>>
 
     @Query("select * from Item where id = :id limit 1")
-    fun getItem(id: String): Flow<Item?>
+    suspend fun getItem(id: String): Item?
 }

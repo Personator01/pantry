@@ -22,11 +22,12 @@ import kotlin.math.exp
 fun ItemDropdown(init: Item.Category,
                  onSelect: (Item.Category) -> Unit,
                  modifier: Modifier = Modifier) {
-    val items = Item.Category.entries.map{it.toString()}
+    val items = Item.Category.entries
+    println()
     var expanded by remember { mutableStateOf(false) }
-    var selected by remember { mutableStateOf(items.indexOf(init.toString())) }
+    var selected by remember { mutableStateOf(items.indexOf(init)) }
     Box(modifier = modifier) {
-        Text(items[selected],
+        Text(items[selected].toString(),
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable(onClick = { expanded = !expanded})
@@ -38,11 +39,11 @@ fun ItemDropdown(init: Item.Category,
         ) {
             items.forEachIndexed{ i, x ->
                 DropdownMenuItem(
-                    text = {Text(x)},
+                    text = {Text(text = x.toString())},
                     onClick = {
                     selected = i;
                     expanded = false;
-                        onSelect(Item.Category.fromInt(selected));
+                        onSelect(Item.Category.fromInt(selected + 1));
                 })
             }
         }
