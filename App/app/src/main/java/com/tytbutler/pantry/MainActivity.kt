@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.room.Room
 import com.tytbutler.Pantry.data.db.AppDatabase
+import com.tytbutler.pantry.ui.screens.Screens
+import com.tytbutler.pantry.ui.screens.list.ListScreen
 import com.tytbutler.pantry.ui.theme.PantryTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,29 +23,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PantryTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                Screens()
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PantryTheme {
-        Greeting("Android")
-    }
-}

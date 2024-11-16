@@ -1,14 +1,19 @@
 package com.tytbutler.pantry.ui
 
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.tytbutler.pantry.ui.screens.list.ListViewModel
+import com.tytbutler.pantry.PantryApplication
+import com.tytbutler.pantry.ui.state.ItemsViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
        initializer {
-           ListViewModel(application.container.repository)
+           ItemsViewModel(pantryApplication().container.itemRepository)
        }
     }
-
 }
+
+fun CreationExtras.pantryApplication(): PantryApplication =
+    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as PantryApplication)

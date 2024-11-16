@@ -6,10 +6,13 @@ import androidx.room.Fts4
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(indices = [Index(value = ["key"], unique = true)])
-@Fts4
+@Fts4(contentEntity = Item::class)
+@Entity(tableName = "itemsFts")
+class ItemFts(val id: String, val name: String)
+
+@Entity
 data class Item (
-    @PrimaryKey  val uid: Int,
+    @PrimaryKey(autoGenerate = false)
     val id: String,
     val name: String,
     val category: Category,
@@ -50,5 +53,8 @@ data class Item (
             .lowercase()
             .filter{it.code in 1..127}
             .replace(' ', '-')
+        fun empty(isNeeded: Boolean): Item =
+            Item(id = "", name = "", category = Category.Misc, isNeeded = isNeeded)
+
     }
 }

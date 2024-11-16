@@ -8,6 +8,9 @@ import kotlinx.coroutines.flow.single
 
 class ItemRepository(private val itemDao: ItemDao) {
     suspend fun addItem(item: Item) {
+        if (item.id.isBlank()) {
+            throw IllegalArgumentException("attempted to add an item without an id")
+        }
         val item_already = itemDao.getItem(item.id);
         if (item_already.single() == null) {
             itemDao.insert(item);

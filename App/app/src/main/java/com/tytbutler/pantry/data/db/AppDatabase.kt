@@ -15,9 +15,11 @@ import com.tytbutler.Pantry.data.entity.Recipe
 abstract class AppDatabase : RoomDatabase() {
     abstract fun recipeDao(): RecipeDao
     abstract fun itemDao(): ItemDao
+
     companion object {
         @Volatile
         private var instance: AppDatabase? = null
+
         fun getDatabase(context: Context): AppDatabase {
             return instance ?: synchronized (this) {
                 Room.databaseBuilder(context, AppDatabase::class.java, "pantry-db")
