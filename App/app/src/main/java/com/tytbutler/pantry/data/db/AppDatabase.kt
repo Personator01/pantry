@@ -10,7 +10,7 @@ import com.tytbutler.Pantry.data.dao.RecipeDao
 import com.tytbutler.Pantry.data.entity.Item
 import com.tytbutler.Pantry.data.entity.Recipe
 
-@Database(entities = [Item::class, Recipe::class], version = 1)
+@Database(entities = [Item::class, Recipe::class], version = 2)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun recipeDao(): RecipeDao
@@ -23,7 +23,6 @@ abstract class AppDatabase : RoomDatabase() {
         fun getDatabase(context: Context): AppDatabase {
             return instance ?: synchronized (this) {
                 Room.databaseBuilder(context, AppDatabase::class.java, "pantry-db")
-                    .fallbackToDestructiveMigration()
                     .build()
                     .also {instance = it}
             }

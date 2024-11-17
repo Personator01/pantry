@@ -32,4 +32,5 @@ class ItemRepository(private val itemDao: ItemDao) {
 
     fun getNeededStream(): Flow<List<Item>> = itemDao.getNeeded()
 
+    fun getItemStream(id: String): Flow<Item?> = itemDao.getItemStream(id)
 }

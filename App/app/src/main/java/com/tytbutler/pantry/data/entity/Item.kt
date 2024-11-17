@@ -6,10 +6,6 @@ import androidx.room.Fts4
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Fts4(contentEntity = Item::class)
-@Entity(tableName = "itemsFts")
-class ItemFts(val id: String, val name: String)
-
 @Entity
 data class Item (
     @PrimaryKey(autoGenerate = false)
@@ -20,7 +16,8 @@ data class Item (
 ) {
     enum class Category {
         Produce { override fun toString(): String = "Produce" },
-        Dry { override fun toString(): String = "Dry" },
+        Dry { override fun toString(): String = "Dry Goods" },
+        Animal { override fun toString(): String = "Animal Product"},
         Pharm { override fun toString(): String = "Pharmacy" },
         Kitchen { override fun toString(): String = "Kitchen" },
         Misc { override fun toString(): String = "Miscellaneous" },
@@ -33,6 +30,7 @@ data class Item (
                     Pharm -> 3
                     Kitchen -> 4
                     Misc -> 5
+                    Animal -> 6
                     Err -> -1
                 }
             }
@@ -40,9 +38,10 @@ data class Item (
                 return when (i) {
                     1 -> Produce
                     2 -> Dry
-                    3 -> Pharm
-                    4 -> Kitchen
-                    5 -> Misc
+                    3 -> Animal
+                    4 -> Pharm
+                    5 -> Kitchen
+                    6 -> Misc
                     else -> Err
                 }
             }
@@ -58,3 +57,10 @@ data class Item (
 
     }
 }
+
+@Entity(tableName = "itemFts")
+@Fts4(contentEntity = Item::class)
+data class ItemFts(
+    val id: String,
+    val name: String
+)

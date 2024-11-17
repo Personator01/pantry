@@ -44,15 +44,8 @@ fun ListScreen(viewModel: ItemsViewModel = viewModel(factory = AppViewModelProvi
                 })
         } else {
             ItemCreator(
-                viewModel = viewModel,
                 createAsNeeded = true,
-                onSubmit = {
-                    val i = it
-                    coroutineScope.launch {
-                        viewModel.saveCurrentItem(true)
-                    }
-                    viewModel.closeEdit()
-                },
+                onSubmit = viewModel::closeEdit,
                 onBack = viewModel::closeEdit
             )
         }
