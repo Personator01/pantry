@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.tytbutler.pantry.PantryApplication
 import com.tytbutler.pantry.ui.state.ItemEditViewModel
+import com.tytbutler.pantry.ui.state.ItemSearchScreenViewModel
 import com.tytbutler.pantry.ui.state.ItemsViewModel
 
 object AppViewModelProvider {
@@ -15,6 +16,9 @@ object AppViewModelProvider {
        }
         initializer {
             ItemEditViewModel(pantryApplication().container.itemRepository)
+        }
+        initializer {
+            ItemSearchScreenViewModel(pantryApplication().container.itemRepository)
         }
     }
 }

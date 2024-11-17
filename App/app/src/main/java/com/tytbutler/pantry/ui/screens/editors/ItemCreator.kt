@@ -29,8 +29,9 @@ import kotlinx.coroutines.launch
 fun ItemCreator( createAsNeeded: Boolean,
                  onSubmit: () -> Unit,
                  onBack: () -> Unit,
-                 viewModel: ItemEditViewModel = viewModel(factory = AppViewModelProvider.Factory),
-                 modifier: Modifier = Modifier) {
+                 modifier: Modifier = Modifier,
+                 viewModel: ItemEditViewModel = viewModel(factory = AppViewModelProvider.Factory)
+) {
     val name by viewModel.name.collectAsState()
     val category by viewModel.category.collectAsState()
     val exists by viewModel.isExistsItem.collectAsState(true)

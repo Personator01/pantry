@@ -1,6 +1,7 @@
 package com.tytbutler.pantry.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,9 +20,15 @@ import androidx.compose.ui.window.Dialog
 fun AppDialog(
     message: String,
     onDismiss: () -> Unit,
+    dismissText: String = "Dismiss",
+    enableSecondButton: Boolean = false,
+    secondButtonText: String = "",
+    onSecondButton: () -> Unit = {},
+    modifier: Modifier = Modifier
 ) {
     Dialog (
         onDismissRequest = onDismiss,
+        modifier = modifier
     )
     {
         Card (
@@ -33,10 +40,22 @@ fun AppDialog(
         ) {
             Column {
                 Text(message)
-                TextButton(
-                    onClick = onDismiss
-                ) {
-                    Text("Dismiss")
+                Row {
+                    if (enableSecondButton) {
+                        TextButton(
+                            onClick = {
+                                onSecondButton();
+                                onDismiss();
+                            }
+                        ) {
+                            Text(secondButtonText)
+                        }
+                    }
+                    TextButton(
+                        onClick = onDismiss
+                    ) {
+                        Text(dismissText)
+                    }
                 }
             }
         }

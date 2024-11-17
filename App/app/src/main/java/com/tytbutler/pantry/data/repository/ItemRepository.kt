@@ -13,13 +13,7 @@ class ItemRepository(private val itemDao: ItemDao) {
         if (item.id.isBlank()) {
             throw IllegalArgumentException("attempted to add an item without an id")
         }
-        val item_already = itemDao.getItem(item.id)
-        if (item_already == null) {
-            itemDao.insert(item);
-        } else {
-            itemDao.update(item);
-        }
-        println("inserted")
+        itemDao.insert(item);
     }
 
     suspend fun needItem(item: Item) {
@@ -28,6 +22,16 @@ class ItemRepository(private val itemDao: ItemDao) {
 
     suspend fun unNeedItem(item: Item) {
         itemDao.update(item.copy(isNeeded = false))
+    }
+
+    suspend fun delItem(item: Item) = itemDao.delete(item)
+
+    fun searchItems(searchTerm: String): Flow<List<Item>> {
+        return if (searchTerm.isNotBlank()) {
+            itemDao.searchItems(searchTerm)
+        } else {
+            itemDao.getAll()
+        }
     }
 
     fun getNeededStream(): Flow<List<Item>> = itemDao.getNeeded()

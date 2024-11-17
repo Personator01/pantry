@@ -1,6 +1,7 @@
 package com.tytbutler.pantry.ui.screens.list
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
@@ -18,7 +19,6 @@ import com.tytbutler.pantry.ui.screens.editors.ItemCreator
 import com.tytbutler.pantry.ui.state.ItemsViewModel
 import kotlinx.coroutines.launch
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ListScreen(viewModel: ItemsViewModel = viewModel(factory = AppViewModelProvider.Factory), modifier: Modifier = Modifier) {
     val isEdit by viewModel.isEdit.collectAsState()
@@ -31,8 +31,8 @@ fun ListScreen(viewModel: ItemsViewModel = viewModel(factory = AppViewModelProvi
                     Icon(Icons.Filled.Add, "")
                 }
             }
-        }
-    ) {
+        },
+    content = { padding ->
         if (!isEdit) {
             List(
                 items = items,
@@ -41,13 +41,17 @@ fun ListScreen(viewModel: ItemsViewModel = viewModel(factory = AppViewModelProvi
                     coroutineScope.launch {
                         viewModel.delCurrentItem(i)
                     }
-                })
+                },
+                modifier = Modifier.padding(padding)
+            )
         } else {
             ItemCreator(
                 createAsNeeded = true,
                 onSubmit = viewModel::closeEdit,
-                onBack = viewModel::closeEdit
+                onBack = viewModel::closeEdit,
+                modifier = Modifier.padding(padding)
             )
         }
     }
+    )
 }
