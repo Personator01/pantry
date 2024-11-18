@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.tytbutler.Pantry.data.entity.Item
 import com.tytbutler.Pantry.data.entity.Recipe
 import kotlinx.coroutines.flow.Flow
 
@@ -19,6 +20,16 @@ interface RecipeDao {
     @Update
     suspend fun update(recipe: Recipe)
 
-    @Query("SELECT * FROM Recipe WHERE name MATCH :term")
-    fun getRecipesBySearch(term: String): Flow<List<Recipe>>
+    @Query("select * " +
+            "from Recipe join RecipeFts " +
+            "on Recipe.id = RecipeFts.id " +
+            "where name or ingredients match :term")
+    fun searchRecipes(term: String): Flow<List<Recipe>>
+
+    @Query("select * from Recipe order by id")
+    fun getAll(): Flow<List<Recipe>>
+
+    @Query("select * from Recipe where id = :id limit 1")
+    fun getRecipe(id: String): Flow<Recipe?>
+
 }

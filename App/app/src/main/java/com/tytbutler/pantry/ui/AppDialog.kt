@@ -24,11 +24,9 @@ fun AppDialog(
     enableSecondButton: Boolean = false,
     secondButtonText: String = "",
     onSecondButton: () -> Unit = {},
-    modifier: Modifier = Modifier
 ) {
     Dialog (
         onDismissRequest = onDismiss,
-        modifier = modifier
     )
     {
         Card (

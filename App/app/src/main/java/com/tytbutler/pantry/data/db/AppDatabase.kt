@@ -23,6 +23,7 @@ abstract class AppDatabase : RoomDatabase() {
         fun getDatabase(context: Context): AppDatabase {
             return instance ?: synchronized (this) {
                 Room.databaseBuilder(context, AppDatabase::class.java, "pantry-db")
+                    .fallbackToDestructiveMigration()
                     .build()
                     .also {instance = it}
             }

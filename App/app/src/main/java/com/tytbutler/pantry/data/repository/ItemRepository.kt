@@ -34,7 +34,15 @@ class ItemRepository(private val itemDao: ItemDao) {
         }
     }
 
+    suspend fun needAll(ids: Set<String>) {
+        ids.forEach {
+            itemDao.needItem(it)
+        }
+    }
+
     fun getNeededStream(): Flow<List<Item>> = itemDao.getNeeded()
 
     fun getItemStream(id: String): Flow<Item?> = itemDao.getItemStream(id)
+
+    fun getName(id: String): String? = itemDao.getItemName(id);
 }

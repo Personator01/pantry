@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
 }
 @Composable
 fun Main() {
-    ListScreen()
+    Screens()
 }
 
 @Preview

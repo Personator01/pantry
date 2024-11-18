@@ -1,5 +1,6 @@
 package com.tytbutler.pantry.ui.screens.Items
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -35,7 +37,12 @@ fun ItemSearch(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        TextField(value = queryTerm, onValueChange = onUpdateQuery)
+        TextField(value = queryTerm, onValueChange = onUpdateQuery,
+            trailingIcon = {
+                Icon(Icons.Default.Clear, "Clear Search",
+                    modifier = Modifier.clickable { onUpdateQuery("") })
+            }
+        )
         ItemsList(
             itemsList = items,
             onItemSelect = onItemSelect,
@@ -94,3 +101,4 @@ private fun ItemCard(item: Item,
         }
     }
 }
+

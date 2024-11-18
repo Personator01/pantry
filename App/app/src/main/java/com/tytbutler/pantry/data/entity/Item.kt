@@ -45,6 +45,9 @@ data class Item (
                     else -> Err
                 }
             }
+            fun entriesOrdered(): List<Category> {
+                return listOf(Produce, Dry, Pharm, Kitchen, Misc, Animal, Err)
+            }
         }
     }
     companion object {
@@ -58,7 +61,7 @@ data class Item (
     }
 }
 
-@Entity(tableName = "itemFts")
+@Entity
 @Fts4(contentEntity = Item::class)
 data class ItemFts(
     val id: String,

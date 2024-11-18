@@ -10,22 +10,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.tytbutler.Pantry.data.entity.Item
 import com.tytbutler.pantry.ui.AppDialog
 import com.tytbutler.pantry.ui.AppViewModelProvider
-import com.tytbutler.pantry.ui.screens.editors.ItemCreator
+import com.tytbutler.pantry.ui.screens.Bar
+import com.tytbutler.pantry.ui.screens.Screen
+import com.tytbutler.pantry.ui.screens.editors.ItemEditor
 import com.tytbutler.pantry.ui.state.ItemSearchScreenViewModel
-import kotlinx.coroutines.launch
 
 @Composable
-fun ItemSearchScreen(
+fun ItemsScreen(
     viewModel: ItemSearchScreenViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    onNavClick: (Screen) -> Unit
 ) {
     val queryTerm by viewModel.query.collectAsState()
     val items by viewModel.list.collectAsState(listOf())
@@ -40,6 +37,7 @@ fun ItemSearchScreen(
                 }
             }
         },
+        bottomBar = { Bar(onNavClick) },
         modifier = Modifier
     ) { padding ->
         if (!isEdit) {
@@ -66,7 +64,7 @@ fun ItemSearchScreen(
                 modifier = Modifier.padding(padding)
             )
         } else {
-            ItemCreator(
+            ItemEditor(
                 createAsNeeded = false,
                 onSubmit = viewModel::closeEdit,
                 onBack = viewModel::closeEdit,
@@ -82,7 +80,6 @@ fun ItemSearchScreen(
                 enableSecondButton = true,
                 secondButtonText = "Delete",
                 onSecondButton = viewModel::delCurrent,
-                modifier = Modifier.padding(padding)
             )
         }
     }

@@ -22,7 +22,7 @@ import kotlin.math.exp
 fun ItemDropdown(init: Item.Category,
                  onSelect: (Item.Category) -> Unit,
                  modifier: Modifier = Modifier) {
-    val items_idx = Item.Category.entries
+    val items_idx = Item.Category.entriesOrdered()
     println()
     var expanded by remember { mutableStateOf(false) }
     var selected by remember { mutableStateOf(items_idx.indexOf(init)) }

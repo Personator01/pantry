@@ -1,6 +1,5 @@
 package com.tytbutler.pantry.ui.screens.list
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -15,12 +14,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.Modifier
 import com.tytbutler.Pantry.data.entity.Item
 import com.tytbutler.pantry.ui.AppViewModelProvider
-import com.tytbutler.pantry.ui.screens.editors.ItemCreator
+import com.tytbutler.pantry.ui.screens.Bar
+import com.tytbutler.pantry.ui.screens.Screen
+import com.tytbutler.pantry.ui.screens.editors.ItemEditor
 import com.tytbutler.pantry.ui.state.ItemsViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun ListScreen(viewModel: ItemsViewModel = viewModel(factory = AppViewModelProvider.Factory), modifier: Modifier = Modifier) {
+fun ListScreen(viewModel: ItemsViewModel = viewModel(factory = AppViewModelProvider.Factory),
+               onNavClick: (Screen) -> Unit,
+               modifier: Modifier = Modifier) {
     val isEdit by viewModel.isEdit.collectAsState()
     val items by viewModel.list.collectAsState(listOf());
     val coroutineScope = rememberCoroutineScope()
@@ -32,6 +35,7 @@ fun ListScreen(viewModel: ItemsViewModel = viewModel(factory = AppViewModelProvi
                 }
             }
         },
+        bottomBar = { Bar(onNavClick) },
     content = { padding ->
         if (!isEdit) {
             List(
@@ -45,7 +49,7 @@ fun ListScreen(viewModel: ItemsViewModel = viewModel(factory = AppViewModelProvi
                 modifier = Modifier.padding(padding)
             )
         } else {
-            ItemCreator(
+            ItemEditor(
                 createAsNeeded = true,
                 onSubmit = viewModel::closeEdit,
                 onBack = viewModel::closeEdit,
