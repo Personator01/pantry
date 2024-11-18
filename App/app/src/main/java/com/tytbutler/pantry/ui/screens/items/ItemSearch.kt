@@ -1,4 +1,4 @@
-package com.tytbutler.pantry.ui.screens.Items
+package com.tytbutler.pantry.ui.screens.items
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
@@ -23,10 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -36,7 +32,6 @@ import com.tytbutler.Pantry.data.entity.Item
 import com.tytbutler.pantry.ui.AppViewModelProvider
 import com.tytbutler.pantry.ui.screens.ReturnBar
 import com.tytbutler.pantry.ui.state.ItemSearchViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun ItemSearch(
@@ -49,6 +44,7 @@ fun ItemSearch(
     secondButtonCondition: (Item) -> Boolean = {true},
     secondButtonIcon: ImageVector = Icons.Filled.Delete,
     disableTopBar: Boolean = false,
+    additionalItem: @Composable () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val items by viewModel.searchedItems.collectAsState()
@@ -76,7 +72,8 @@ fun ItemSearch(
                 enableSecondaryButton = enableSecondaryButton,
                 onSecondButton = onSecondButton,
                 secondButtonCondition = secondButtonCondition,
-                secondButtonIcon = secondButtonIcon
+                secondButtonIcon = secondButtonIcon,
+                additionalItem = additionalItem
             )
         }
     }
@@ -90,6 +87,7 @@ private fun ItemsList(itemsList: List<Item>,
                       onSecondButton: (Item) -> Unit = {},
                       secondButtonCondition: (Item) -> Boolean = {true},
                       secondButtonIcon: ImageVector = Icons.Filled.Delete,
+                      additionalItem: @Composable () -> Unit,
                       modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier.padding(10.dp)) {
         items(itemsList) {
@@ -99,6 +97,9 @@ private fun ItemsList(itemsList: List<Item>,
                 enableSecondaryButton,
                 onSecondButton,
                 secondButtonCondition,secondButtonIcon)
+        }
+        item {
+            additionalItem()
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.tytbutler.pantry.ui.screens.list
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -8,9 +10,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.tytbutler.pantry.ui.AppViewModelProvider
 import com.tytbutler.pantry.ui.screens.NavBar
-import com.tytbutler.pantry.ui.screens.Items.ItemSearch
+import com.tytbutler.pantry.ui.screens.items.ItemSearch
 import com.tytbutler.pantry.ui.screens.Screen
 import com.tytbutler.pantry.ui.screens.editors.ItemEditor
 import com.tytbutler.pantry.ui.state.ItemsViewModel
@@ -63,7 +67,16 @@ fun ListScreen(viewModel: ItemsViewModel = viewModel(factory = AppViewModelProvi
                 onBack = viewModel::closeSearch,
                 onItemSelect = { viewModel.needItem(it); viewModel.closeSearch()},
                 buttonIcon = Icons.Default.Add,
-                enableSecondaryButton = false
+                enableSecondaryButton = false,
+                additionalItem = {
+                    Row (horizontalArrangement = Arrangement.Center) {
+                        Button(
+                            onClick = {viewModel.closeSearch(); viewModel.openEdit()}
+                        ) {
+                            Text("Create Item")
+                        }
+                    }
+                }
             )
         } else {
             List(

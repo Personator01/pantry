@@ -1,4 +1,4 @@
-package com.tytbutler.pantry.ui.screens.Items
+package com.tytbutler.pantry.ui.screens.items
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons

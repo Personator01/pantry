@@ -5,13 +5,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.tytbutler.pantry.ui.screens.Items.ItemsScreen
+import com.tytbutler.pantry.ui.screens.items.ItemsScreen
 import com.tytbutler.pantry.ui.screens.list.ListScreen
 import com.tytbutler.pantry.ui.screens.recipes.RecipeScreen
-import kotlinx.serialization.Serializable
 
 enum class Screen {
     List,
