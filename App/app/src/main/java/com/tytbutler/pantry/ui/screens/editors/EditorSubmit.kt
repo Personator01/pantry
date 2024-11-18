@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun EditorSubmit(
+    enable: Boolean,
     onSubmit: () -> Either<Unit, String>,
 )
 {
@@ -26,7 +27,8 @@ fun EditorSubmit(
                 is Either.Left -> Unit
                 is Either.Right -> {alert_message = r.right; is_alert_open = true}
             }
-        }
+        },
+        enabled = enable
     )
     {
         Text("Save")

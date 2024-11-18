@@ -23,13 +23,14 @@ interface RecipeDao {
     @Query("select Recipe.id, Recipe.name, Recipe.description, Recipe.ingredients " +
             "from Recipe join RecipeFts " +
             "on Recipe.id = RecipeFts.id " +
-            "where RecipeFts.name or RecipeFts.ingredients match :term")
+            "where RecipeFts match :term")
     fun searchRecipes(term: String): Flow<List<Recipe>>
 
     @Query("select * from Recipe order by id")
     fun getAll(): Flow<List<Recipe>>
 
+
     @Query("select * from Recipe where id = :id limit 1")
-    fun getRecipe(id: String): Flow<Recipe?>
+    suspend fun getRecipe(id: String): Recipe?
 
 }

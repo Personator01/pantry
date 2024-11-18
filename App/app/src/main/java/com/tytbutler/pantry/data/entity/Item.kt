@@ -21,6 +21,7 @@ data class Item (
         Pharm { override fun toString(): String = "Pharmacy" },
         Kitchen { override fun toString(): String = "Kitchen" },
         Misc { override fun toString(): String = "Miscellaneous" },
+        Frozen { override fun toString(): String = "Frozen"},
         Err { override fun toString(): String = "ERROR" };
         companion object {
             fun idx(cat: Category): Int {
@@ -31,6 +32,7 @@ data class Item (
                     Kitchen -> 4
                     Misc -> 5
                     Animal -> 6
+                    Frozen -> 7
                     Err -> -1
                 }
             }
@@ -38,15 +40,16 @@ data class Item (
                 return when (i) {
                     1 -> Produce
                     2 -> Dry
-                    3 -> Animal
-                    4 -> Pharm
-                    5 -> Kitchen
-                    6 -> Misc
+                    3 -> Pharm
+                    4 -> Kitchen
+                    5 -> Misc
+                    6 -> Animal
+                    7 -> Frozen
                     else -> Err
                 }
             }
             fun entriesOrdered(): List<Category> {
-                return listOf(Produce, Dry, Pharm, Kitchen, Misc, Animal, Err)
+                return listOf(Produce, Dry, Animal, Frozen, Pharm, Kitchen, Misc, Err)
             }
         }
     }

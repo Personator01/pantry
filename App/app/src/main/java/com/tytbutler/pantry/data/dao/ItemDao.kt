@@ -31,14 +31,16 @@ interface ItemDao {
     @Query("select Item.id, Item.name, Item.category, isNeeded " +
             "from Item join ItemFts " +
             "on Item.id = ItemFts.id " +
-            "where ItemFts.name match :searchTerm")
+            "where ItemFts match :searchTerm")
     fun searchItems(searchTerm: String): Flow<List<Item>>
 
     @Query("select * from Item order by id")
     fun getAll(): Flow<List<Item>>
 
+
+
     @Query("select name from Item where id = :id limit 1")
-    fun getItemName(id: String): String?
+    suspend fun getItemName(id: String): String?
 
     @Query("update Item " +
             "set isNeeded = true " +

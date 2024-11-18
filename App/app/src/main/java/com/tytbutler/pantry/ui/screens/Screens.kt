@@ -22,10 +22,12 @@ enum class Screen {
 @Composable
 fun Screens() {
     var currentScreen by remember { mutableStateOf(Screen.List) }
-    val navCallback = {screen: Screen -> currentScreen = screen}
+    val navCallback = {screen: Screen ->
+        println("navigating to $screen")
+        currentScreen = screen}
     when (currentScreen) {
         Screen.List -> ListScreen(onNavClick = navCallback)
-        Screen.Items -> ListScreen(onNavClick = navCallback)
-        Screen.Recipes -> ListScreen(onNavClick = navCallback)
+        Screen.Items -> ItemsScreen(onNavClick = navCallback)
+        Screen.Recipes -> RecipeScreen(onNavClick = navCallback)
     }
 }

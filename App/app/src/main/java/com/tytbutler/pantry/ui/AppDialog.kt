@@ -1,5 +1,6 @@
 package com.tytbutler.pantry.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,9 +37,9 @@ fun AppDialog(
                 .padding(16.dp),
             shape = RoundedCornerShape(16.dp),
         ) {
-            Column {
+            Column (modifier = Modifier.padding(20.dp)){
                 Text(message)
-                Row {
+                Row (horizontalArrangement = Arrangement.End) {
                     if (enableSecondButton) {
                         TextButton(
                             onClick = {

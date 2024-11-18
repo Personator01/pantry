@@ -4,9 +4,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
@@ -19,6 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,11 +31,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tytbutler.Pantry.data.entity.Recipe
 import com.tytbutler.pantry.ui.AppDialog
 import com.tytbutler.pantry.ui.AppViewModelProvider
-import com.tytbutler.pantry.ui.screens.Bar
+import com.tytbutler.pantry.ui.screens.NavBar
 import com.tytbutler.pantry.ui.screens.Screen
 import com.tytbutler.pantry.ui.screens.editors.RecipeEditor
 import com.tytbutler.pantry.ui.state.RecipeScreenViewModel
@@ -50,10 +56,13 @@ fun RecipeScreen(
                     Icon(Icons.Default.Add, "Add Recipe")
                 }
             },
-            bottomBar = { Bar(onNavClick) },
+            bottomBar = { NavBar(onNavClick) },
         ) { padding ->
             val queryTerm by viewModel.queryTerm.collectAsState()
-            Column(modifier = Modifier.padding(padding)) {
+            LaunchedEffect(queryTerm) { viewModel.searchRecipes() }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(padding).padding(20.dp)) {
                 TextField(
                     value = queryTerm,
                     onValueChange = viewModel::updateQuery,
@@ -61,6 +70,7 @@ fun RecipeScreen(
                         Icon(Icons.Default.Clear, "Clear Search",
                             modifier = Modifier.clickable { viewModel.updateQuery("") })
                     })
+                Spacer(modifier = Modifier.height(20.dp))
                 RecipeList(viewModel)
             }
         }
@@ -76,8 +86,9 @@ fun RecipeScreen(
 }
 
 @Composable
-fun RecipeList(viewModel: RecipeScreenViewModel, modifier: Modifier = Modifier) {
-    val searchedRecipes by viewModel.searchedRecipes.collectAsState(listOf());
+fun RecipeList(viewModel: RecipeScreenViewModel, modifier: Modifier = Modifier.fillMaxWidth()) {
+    val searchedRecipesStream by viewModel.searchedRecipes.collectAsState()
+    val searchedRecipes by searchedRecipesStream.collectAsState(listOf())
     LazyColumn {
         items(searchedRecipes) {
             RecipeCard(it, viewModel)
@@ -88,21 +99,25 @@ fun RecipeList(viewModel: RecipeScreenViewModel, modifier: Modifier = Modifier) 
 @Composable
 fun RecipeCard(recipe: Recipe, viewModel: RecipeScreenViewModel) {
     var isDelDialogOpen by remember { mutableStateOf(false) }
-    Row (horizontalArrangement = Arrangement.SpaceBetween) {
+    Row (horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxWidth()) {
         Text(recipe.name)
         Row {
             Button(
-                onClick = {isDelDialogOpen = true}
+                onClick = {isDelDialogOpen = true},
+                shape = CircleShape,
             ) {
                 Icon(Icons.Default.Delete, "Delete recipe")
             }
             Button(
-                onClick = {viewModel.openEdit(recipe)}
+                onClick = {viewModel.openEdit(recipe)},
+                shape = CircleShape,
             ) {
                 Icon(Icons.Default.Edit, "Edit recipe")
             }
             Button(
-                onClick = {viewModel.addToList(recipe)}
+                onClick = {viewModel.addToList(recipe)},
+                shape = CircleShape,
             ) {
                 Icon(Icons.Default.Add, "Add ingredients to list")
             }

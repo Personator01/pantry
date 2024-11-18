@@ -7,7 +7,10 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.tytbutler.pantry.PantryApplication
 import com.tytbutler.pantry.ui.state.ItemEditViewModel
 import com.tytbutler.pantry.ui.state.ItemSearchScreenViewModel
+import com.tytbutler.pantry.ui.state.ItemSearchViewModel
 import com.tytbutler.pantry.ui.state.ItemsViewModel
+import com.tytbutler.pantry.ui.state.RecipeEditViewModel
+import com.tytbutler.pantry.ui.state.RecipeScreenViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
@@ -20,6 +23,22 @@ object AppViewModelProvider {
         initializer {
             ItemSearchScreenViewModel(pantryApplication().container.itemRepository)
         }
+        initializer {
+            ItemSearchViewModel(pantryApplication().container.itemRepository)
+        }
+
+        initializer {
+            RecipeScreenViewModel(
+                pantryApplication().container.recipeRepository,
+                pantryApplication().container.itemRepository)
+        }
+        initializer {
+            RecipeEditViewModel(
+                pantryApplication().container.recipeRepository,
+                pantryApplication().container.itemRepository)
+        }
+
+
     }
 }
 

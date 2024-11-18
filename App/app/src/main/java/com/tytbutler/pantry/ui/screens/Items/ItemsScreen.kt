@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tytbutler.pantry.ui.AppDialog
 import com.tytbutler.pantry.ui.AppViewModelProvider
-import com.tytbutler.pantry.ui.screens.Bar
+import com.tytbutler.pantry.ui.screens.NavBar
 import com.tytbutler.pantry.ui.screens.Screen
 import com.tytbutler.pantry.ui.screens.editors.ItemEditor
 import com.tytbutler.pantry.ui.state.ItemSearchScreenViewModel
@@ -24,8 +24,6 @@ fun ItemsScreen(
     viewModel: ItemSearchScreenViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onNavClick: (Screen) -> Unit
 ) {
-    val queryTerm by viewModel.query.collectAsState()
-    val items by viewModel.list.collectAsState(listOf())
     val isAlert by viewModel.isAlert.collectAsState()
     val isEdit by viewModel.isEdit.collectAsState()
     Scaffold(
@@ -37,14 +35,11 @@ fun ItemsScreen(
                 }
             }
         },
-        bottomBar = { Bar(onNavClick) },
+        bottomBar = { NavBar(onNavClick) },
         modifier = Modifier
     ) { padding ->
         if (!isEdit) {
             ItemSearch(
-                items = items,
-                queryTerm = queryTerm,
-                onUpdateQuery = viewModel::updateQuery,
                 onItemSelect = {
                     viewModel.prepareToDelete(it)
                     viewModel.openAlert(
@@ -59,8 +54,10 @@ fun ItemsScreen(
                 },
                 secondButtonIcon = Icons.Filled.Add,
                 onSecondButton = {
-                    viewModel.unNeedItem(it)
+                    viewModel.needItem(it)
                 },
+                disableTopBar = true,
+                onBack = {},
                 modifier = Modifier.padding(padding)
             )
         } else {

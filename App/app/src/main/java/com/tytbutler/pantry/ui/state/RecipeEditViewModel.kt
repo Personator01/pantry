@@ -2,10 +2,12 @@ package com.tytbutler.pantry.ui.state
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tytbutler.Pantry.data.entity.Item
 import com.tytbutler.Pantry.data.entity.Recipe
 import com.tytbutler.pantry.data.repository.ItemRepository
 import com.tytbutler.pantry.data.repository.RecipeRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.transformLatest
@@ -16,9 +18,8 @@ class RecipeEditViewModel(private val recipeRepository: RecipeRepository,
     private var _currentRecipe = MutableStateFlow(Recipe.empty())
     val currentRecipe = _currentRecipe.asStateFlow()
 
-    private val _existingRecipe = recipeRepository.getRecipeStream(_currentRecipe.value.id)
-    @OptIn(ExperimentalCoroutinesApi::class)
-    var isExists = _existingRecipe.transformLatest<Recipe?, Boolean> { it != null }
+    private var _isExistsRecipe = MutableStateFlow(false)
+    val isExistsRecipe = _isExistsRecipe.asStateFlow()
 
     //Pairs of ingredient ids and their corresponding names
     private var _ingredientStrings: MutableStateFlow<List<Pair<String, String>>> = MutableStateFlow(listOf())
@@ -27,17 +28,22 @@ class RecipeEditViewModel(private val recipeRepository: RecipeRepository,
     private var _isAddIngredient = MutableStateFlow(false)
     val isAddIngredient = _isAddIngredient.asStateFlow()
 
-    private var _itemQuery = MutableStateFlow("")
-    val itemQuery = _itemQuery.asStateFlow()
-
-    val searchedItems = itemRepository.searchItems(_itemQuery.value)
+    private var _enableSubmit = MutableStateFlow(true)
+    val enableSubmit = _enableSubmit.asStateFlow()
 
     fun loadRecipe(recipe: Recipe) {
         _currentRecipe.value = recipe
+        updateRecipeName(_currentRecipe.value.name); // just reloads exists
+        updateIngredientStrings()
     }
 
     fun updateRecipeName(name: String) {
+        _enableSubmit.value = false
         _currentRecipe.value = _currentRecipe.value.copy(name = name, id = Recipe.nameToId(name))
+        viewModelScope.launch {
+            _isExistsRecipe.value = recipeRepository.getRecipe(_currentRecipe.value.id) != null
+            _enableSubmit.value = true
+        }
     }
 
     fun addIngredient(id: String) {
@@ -63,12 +69,7 @@ class RecipeEditViewModel(private val recipeRepository: RecipeRepository,
     }
 
     fun closeAddIngredient() {
-        _itemQuery.value = "";
         _isAddIngredient.value = false
-    }
-
-    fun updateQuery(query: String) {
-        _itemQuery.value = query
     }
 
     fun addNewRecipe(recipe: Recipe) {
@@ -84,14 +85,13 @@ class RecipeEditViewModel(private val recipeRepository: RecipeRepository,
     }
 
     private fun updateIngredientStrings() {
+        _enableSubmit.value = false
         viewModelScope.launch {
             _ingredientStrings.value = _currentRecipe.value.ingredients.map {
                 val name = itemRepository.getName(it)
                 Pair(it, name ?: ("Item $it does not exist"))
             }
+            _enableSubmit.value = true
         }
     }
-
-
-
 }

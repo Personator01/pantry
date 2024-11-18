@@ -7,8 +7,10 @@ import com.tytbutler.Pantry.data.dao.RecipeDao
 import com.tytbutler.Pantry.data.entity.Recipe
 import com.tytbutler.pantry.data.repository.ItemRepository
 import com.tytbutler.pantry.data.repository.RecipeRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 
 class RecipeScreenViewModel(private val recipeRepository: RecipeRepository,
@@ -26,7 +28,12 @@ class RecipeScreenViewModel(private val recipeRepository: RecipeRepository,
     private var _queryTerm = MutableStateFlow("")
     val queryTerm = _queryTerm.asStateFlow()
 
-    val searchedRecipes = recipeRepository.searchRecipes(_queryTerm.value)
+    private var _searchedRecipes: MutableStateFlow<Flow<List<Recipe>>> = MutableStateFlow(emptyFlow())
+    val searchedRecipes = _searchedRecipes.asStateFlow()
+
+    suspend fun searchRecipes() {
+        _searchedRecipes.value = recipeRepository.searchRecipes(_queryTerm.value)
+    }
 
     fun openEdit(recipe: Recipe) {
         _editingRecipe.value = recipe

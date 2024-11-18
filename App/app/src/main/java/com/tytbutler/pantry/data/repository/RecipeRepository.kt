@@ -6,19 +6,27 @@ import com.tytbutler.Pantry.data.entity.Recipe
 import kotlinx.coroutines.flow.Flow
 
 class RecipeRepository( private val recipeDao: RecipeDao){
-    fun getRecipeStream(id: String): Flow<Recipe?> = recipeDao.getRecipe(id)
+    suspend fun getRecipe(id: String): Recipe? = recipeDao.getRecipe(id)
 
-    fun searchRecipes(queryTerm: String): Flow<List<Recipe>> {
+
+    suspend fun searchRecipes(queryTerm: String): Flow<List<Recipe>> {
         return if (queryTerm.isNotBlank()) {
-            recipeDao.searchRecipes(queryTerm)
+            val search_split = queryTerm.split(',').map { s -> "'*$s*'" }
+            recipeDao.searchRecipes(search_split.joinToString(" OR ") )
         } else {
             recipeDao.getAll()
         }
     }
 
-    fun add(recipe: Recipe) = recipeDao::insert
+    suspend fun add(recipe: Recipe) {
+        println("Adding recipe ${recipe.name}")
+        recipeDao.insert(recipe);
+    }
 
-    fun update(recipe: Recipe) = recipeDao::update
+    suspend fun update(recipe: Recipe) {
+        println("Updating recipe ${recipe.name}")
+        recipeDao.update(recipe)
+    }
 
     suspend fun deleteRecipe(recipe: Recipe) = recipeDao.delete(recipe)
 }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
@@ -14,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.tytbutler.Pantry.data.entity.Item
 import kotlin.math.exp
 
@@ -26,7 +28,7 @@ fun ItemDropdown(init: Item.Category,
     println()
     var expanded by remember { mutableStateOf(false) }
     var selected by remember { mutableStateOf(items_idx.indexOf(init)) }
-    Box(modifier = modifier) {
+    Box(modifier = modifier.padding(10.dp)) {
         Text(items_idx[selected].toString(),
             modifier = Modifier
                 .fillMaxWidth()
@@ -35,7 +37,7 @@ fun ItemDropdown(init: Item.Category,
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(10.dp)
         ) {
             items_idx.forEachIndexed{ i, x ->
                 DropdownMenuItem(

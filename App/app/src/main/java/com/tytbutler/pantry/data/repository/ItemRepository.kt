@@ -26,9 +26,10 @@ class ItemRepository(private val itemDao: ItemDao) {
 
     suspend fun delItem(item: Item) = itemDao.delete(item)
 
-    fun searchItems(searchTerm: String): Flow<List<Item>> {
+    suspend fun searchItems(searchTerm: String): Flow<List<Item>> {
         return if (searchTerm.isNotBlank()) {
-            itemDao.searchItems(searchTerm)
+            val search_split = searchTerm.split(',').map { s -> "'*$s*'" }
+            itemDao.searchItems(search_split.joinToString(" OR ") )
         } else {
             itemDao.getAll()
         }
@@ -42,7 +43,11 @@ class ItemRepository(private val itemDao: ItemDao) {
 
     fun getNeededStream(): Flow<List<Item>> = itemDao.getNeeded()
 
+    fun getAll(): Flow<List<Item>> = itemDao.getAll()
+
     fun getItemStream(id: String): Flow<Item?> = itemDao.getItemStream(id)
 
-    fun getName(id: String): String? = itemDao.getItemName(id);
+    suspend fun getItem(id: String): Item? = itemDao.getItem(id)
+
+    suspend fun getName(id: String): String? = itemDao.getItemName(id);
 }

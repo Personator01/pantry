@@ -24,16 +24,10 @@ class ItemSearchScreenViewModel(private val itemRepository: ItemRepository) : Vi
     private var _isEdit = MutableStateFlow(false)
     val isEdit = _isEdit.asStateFlow()
 
-    val list = itemRepository.searchItems(_query.value)
-
-    fun updateQuery(query: String) {
-        _query.value = query
-    }
 
     fun openEdit() {
         _isEdit.value = true
     }
-
 
     fun closeEdit() {
         _isEdit.value = false
@@ -57,9 +51,9 @@ class ItemSearchScreenViewModel(private val itemRepository: ItemRepository) : Vi
         }
     }
 
-    fun unNeedItem(item: Item) {
+    fun needItem(item: Item) {
         viewModelScope.launch {
-            itemRepository.unNeedItem(item)
+            itemRepository.needItem(item)
         }
     }
 }
