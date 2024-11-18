@@ -1,6 +1,7 @@
 package com.tytbutler.pantry.ui.screens.items
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -29,7 +30,7 @@ fun ItemsScreen(
     Scaffold(
         floatingActionButton = {
             if (!isEdit) {
-                FloatingActionButton(onClick = viewModel::openEdit)
+                FloatingActionButton(onClick = viewModel::openEdit, shape = CircleShape)
                 {
                     Icon(Icons.Filled.Add, "")
                 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -41,12 +42,12 @@ fun ListScreen(viewModel: ItemsViewModel = viewModel(factory = AppViewModelProvi
     Scaffold(
         floatingActionButton = {
             if (!isEdit) {
-                Column {
+                Row {
                     FloatingActionButton(shape = CircleShape,
                         onClick = { viewModel.openEdit() }) {
                         Icon(Icons.Default.Add, "Add an item")
                     }
-                    Spacer(Modifier.height(20.dp))
+                    Spacer(Modifier.width(20.dp))
                     FloatingActionButton(shape = CircleShape, onClick = { viewModel.openSearch() }) {
                         Icon(Icons.Default.Search, "Search items")
                     }

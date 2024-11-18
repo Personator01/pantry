@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -113,8 +114,10 @@ private fun ItemCard(item: Item,
                      secondButtonCondition: (Item) -> Boolean = {true},
                      secondButtonIcon: ImageVector = Icons.Filled.Delete,
                      modifier: Modifier = Modifier) {
-    Card (modifier = modifier.fillMaxWidth()) {
-        Row (modifier = Modifier.fillMaxWidth().padding(10.dp), horizontalArrangement = Arrangement.SpaceBetween){
+    Card (modifier = modifier.fillMaxWidth().height(40.dp)) {
+        Row (modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 2.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically){
             Text(item.name, modifier = Modifier.padding(start = 20.dp))
             Row() {
                 if (enableSecondaryButton && secondButtonCondition(item)) {

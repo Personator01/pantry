@@ -51,7 +51,8 @@ fun RecipeScreen(
         Scaffold(
             floatingActionButton = {
                 FloatingActionButton(
-                    onClick = viewModel::openCreate
+                    onClick = viewModel::openCreate,
+                    shape = CircleShape
                 ) {
                     Icon(Icons.Default.Add, "Add Recipe")
                 }
@@ -62,7 +63,7 @@ fun RecipeScreen(
             LaunchedEffect(queryTerm) { viewModel.searchRecipes() }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(padding).padding(20.dp)) {
+                modifier = Modifier.padding(padding).padding(20.dp).fillMaxWidth()) {
                 TextField(
                     value = queryTerm,
                     onValueChange = viewModel::updateQuery,
@@ -70,7 +71,7 @@ fun RecipeScreen(
                         Icon(Icons.Default.Clear, "Clear Search",
                             modifier = Modifier.clickable { viewModel.updateQuery("") })
                     })
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(20.dp).fillMaxWidth())
                 RecipeList(viewModel)
             }
         }
@@ -93,6 +94,9 @@ fun RecipeList(viewModel: RecipeScreenViewModel, modifier: Modifier = Modifier.f
         items(searchedRecipes) {
             RecipeCard(it, viewModel)
         }
+        item {
+            Spacer(Modifier.height(100.dp))
+        }
     }
 }
 
@@ -100,6 +104,7 @@ fun RecipeList(viewModel: RecipeScreenViewModel, modifier: Modifier = Modifier.f
 fun RecipeCard(recipe: Recipe, viewModel: RecipeScreenViewModel) {
     var isDelDialogOpen by remember { mutableStateOf(false) }
     Row (horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()) {
         Text(recipe.name)
         Row {
