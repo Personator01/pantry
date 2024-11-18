@@ -20,10 +20,10 @@ interface RecipeDao {
     @Update
     suspend fun update(recipe: Recipe)
 
-    @Query("select * " +
+    @Query("select Recipe.id, Recipe.name, Recipe.description, Recipe.ingredients " +
             "from Recipe join RecipeFts " +
             "on Recipe.id = RecipeFts.id " +
-            "where name or ingredients match :term")
+            "where RecipeFts.name or RecipeFts.ingredients match :term")
     fun searchRecipes(term: String): Flow<List<Recipe>>
 
     @Query("select * from Recipe order by id")

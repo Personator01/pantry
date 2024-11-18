@@ -8,9 +8,11 @@ import androidx.room.TypeConverters
 import com.tytbutler.Pantry.data.dao.ItemDao
 import com.tytbutler.Pantry.data.dao.RecipeDao
 import com.tytbutler.Pantry.data.entity.Item
+import com.tytbutler.Pantry.data.entity.ItemFts
 import com.tytbutler.Pantry.data.entity.Recipe
+import com.tytbutler.Pantry.data.entity.RecipeFts
 
-@Database(entities = [Item::class, Recipe::class], version = 2)
+@Database(entities = [Item::class, Recipe::class, ItemFts::class, RecipeFts::class], version = 2)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun recipeDao(): RecipeDao

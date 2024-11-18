@@ -28,10 +28,10 @@ interface ItemDao {
     @Query("select * from Item where id = :id limit 1")
     fun getItemStream(id: String): Flow<Item?>
 
-    @Query("select * " +
+    @Query("select Item.id, Item.name, Item.category, isNeeded " +
             "from Item join ItemFts " +
             "on Item.id = ItemFts.id " +
-            "where name match :searchTerm")
+            "where ItemFts.name match :searchTerm")
     fun searchItems(searchTerm: String): Flow<List<Item>>
 
     @Query("select * from Item order by id")
