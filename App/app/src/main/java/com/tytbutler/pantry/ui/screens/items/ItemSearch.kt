@@ -52,6 +52,7 @@ fun ItemSearch(
     val current_items by items.collectAsState(listOf())
     val query by viewModel.searchQuery.collectAsState()
     BackHandler { onBack() }
+    LaunchedEffect(Unit) { viewModel.updateQuery("") }
     LaunchedEffect(query) { viewModel.searchItems() }
     Scaffold(modifier = Modifier.fillMaxWidth(),
         topBar = { if (!disableTopBar) {ReturnBar(onBack)} }

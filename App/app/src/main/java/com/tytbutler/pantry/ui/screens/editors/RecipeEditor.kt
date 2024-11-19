@@ -1,6 +1,8 @@
 package com.tytbutler.pantry.ui.screens.editors
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
@@ -25,6 +29,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -56,7 +61,8 @@ fun RecipeEditor(
             BackHandler(enabled = true, onBack = onExit)
             Column(horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth().height(1000.dp).padding(padding)) {
+                modifier = Modifier.fillMaxWidth().height(1000.dp).padding(padding)
+                    .verticalScroll(rememberScrollState())) {
                 if (createMode) {
                     Text("Recipe Name", textAlign = TextAlign.Center)
                     TextField(
@@ -121,7 +127,7 @@ fun RecipeEditor(
 
 @Composable
 fun RecipeItemList(items: List<Pair<String, String>>, viewModel: RecipeEditViewModel, modifier: Modifier = Modifier) {
-    LazyColumn {
+    LazyColumn(modifier = modifier.height(400.dp)) {
         items(items) {
             ItemCard(it, viewModel)
         }
@@ -131,7 +137,7 @@ fun RecipeItemList(items: List<Pair<String, String>>, viewModel: RecipeEditViewM
 @Composable
 fun ItemCard(item: Pair<String, String>, viewModel: RecipeEditViewModel, modifier: Modifier = Modifier) {
     Card(modifier = Modifier) {
-        Row (horizontalArrangement = Arrangement.SpaceBetween){
+        Row (horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically){
             Text(item.second)
             Button(
                 onClick = {viewModel.removeIngredient(item.first)}
